@@ -31,6 +31,6 @@ public class JWTUtils {
                 .parseClaimsJws(token)
                 .getBody();
 
-        return new UserClaims(claims.get("name", String.class));
+        return new UserClaims(claims.get("name", String.class),claims.get("role", String.class));
     }
 }
