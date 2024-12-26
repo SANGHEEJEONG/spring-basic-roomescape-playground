@@ -28,18 +28,13 @@ public class LoginMemberArgumentResolver implements HandlerMethodArgumentResolve
     @Override
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
         HttpServletRequest request = ((ServletWebRequest) webRequest).getRequest();
-        String token = extractToken(request);
-
-        return memberService.checkLogin(new UserToken(token));
-    }
-
-    private String extractToken(HttpServletRequest request) {
-        return Arrays.stream(request.getCookies())
+        String token = Arrays.stream(request.getCookies())
                 .filter(cookie -> "token".equals(cookie.getName()))
                 .findFirst()
                 .map(Cookie::getValue)
                 .orElseThrow(()->new IllegalArgumentException("토큰을 찾을 수 없습니다."));
-    }
 
+        return memberService.checkLogin(new UserToken(token));
+    }
 }
 
