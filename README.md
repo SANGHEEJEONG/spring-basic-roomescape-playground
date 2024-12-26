@@ -1,5 +1,7 @@
 # 🌀 Spring MVC (인증)
 
+# 1단계
+___
 ## 로그인
 #### 로그인 페이지
    + 이메일, 비밀번호 입력
@@ -16,6 +18,8 @@
 + POST/login : 로그인 요청
 + GET/login/check : 인증 정보 조회
 
+# 2단계
+___
 ## 로그인 리팩터링
 #### HandlerMethodArgumentResolver
 + 컨트롤러 메서드 파라미터로 자동 주입
@@ -24,3 +28,10 @@
 + 예약 : ReservationRequest(요청 DTO)
     -> name이 있으면 name으로 Member 찾기
     -> name이 없으면 Cookie에 담긴 정보 활용
+
+# 3단계
+___
+## 관리자 기능
++ admin 페이지 진입 (HandlerInterceptor 이용)
+    -> 관리자 : 진입 가능
+    -> 관리자 X : 401 코드 응답
