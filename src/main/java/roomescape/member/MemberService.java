@@ -3,9 +3,9 @@ package roomescape.member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
+import roomescape.auth.AuthClaims;
+import roomescape.auth.AuthToken;
 import roomescape.auth.JWTUtils;
-import roomescape.auth.UserClaims;
-import roomescape.auth.UserToken;
 
 @Service
 @RequiredArgsConstructor
@@ -14,11 +14,11 @@ public class MemberService {
     private final JWTUtils jwtUtils;
 
     public MemberResponse createMember(MemberRequest memberRequest) {
-        Member member = memberDao.save(new Member(memberRequest.getName(), memberRequest.getEmail(), memberRequest.getPassword(), "USER"));
+        Member member = memberDao.save(new Member(memberRequest.name(), memberRequest.email(), memberRequest.password(), "USER"));
         return new MemberResponse(member.getId(), member.getName(), member.getEmail());
     }
 
-    public UserToken getToken(LoginRequest loginRequest) {
+    public AuthToken getToken(LoginRequest loginRequest) {
         try {
             Member member = memberDao.findByEmailAndPassword(loginRequest.email(), loginRequest.password());
             return jwtUtils.createToken(member);
@@ -27,9 +27,9 @@ public class MemberService {
         }
     }
 
-    public UserClaims checkLogin(UserToken userToken) {
+    public AuthClaims checkLogin(AuthToken userToken) {
         try {
-            UserClaims userClaims = jwtUtils.getClaimsFromToken(userToken.token());
+            AuthClaims userClaims = jwtUtils.getClaimsFromToken(userToken.token());
             memberDao.findByName(userClaims.name());
             return userClaims;
         } catch (EmptyResultDataAccessException exception) {

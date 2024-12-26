@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import roomescape.auth.UserClaims;
+import roomescape.auth.AuthClaims;
 
 import java.net.URI;
 import java.util.List;
@@ -25,7 +25,7 @@ public class ReservationController {
     }
 
     @PostMapping("/reservations")
-    public ResponseEntity create(@RequestBody ReservationRequest reservationRequest, UserClaims userClaims) {
+    public ResponseEntity create(@RequestBody ReservationRequest reservationRequest, AuthClaims userClaims) {
         if (reservationRequest.date() == null
                 || reservationRequest.theme() == null
                 || reservationRequest.time() == null) {

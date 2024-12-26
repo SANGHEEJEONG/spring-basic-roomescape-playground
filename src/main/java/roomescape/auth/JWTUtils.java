@@ -13,7 +13,7 @@ public class JWTUtils {
     @Value("${roomescape.auth.jwt.secret}")
     private String secretKey;
 
-    public UserToken createToken(Member member){
+    public AuthToken createToken(Member member) {
         String accessToken = Jwts.builder()
                 .setSubject(member.getId().toString())
                 .claim("name", member.getName())
@@ -21,16 +21,16 @@ public class JWTUtils {
                 .signWith(Keys.hmacShaKeyFor(secretKey.getBytes()))
                 .compact();
 
-        return new UserToken(accessToken);
+        return new AuthToken(accessToken);
     }
 
-    public UserClaims getClaimsFromToken(String token) {
+    public AuthClaims getClaimsFromToken(String token) {
         Claims claims = Jwts.parserBuilder()
                 .setSigningKey(Keys.hmacShaKeyFor(secretKey.getBytes()))
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
 
-        return new UserClaims(claims.get("name", String.class),claims.get("role", String.class));
+        return new AuthClaims(claims.get("name", String.class), claims.get("role", String.class));
     }
 }

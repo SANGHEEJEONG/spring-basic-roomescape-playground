@@ -1,6 +1,6 @@
 package roomescape.auth;
 
-public record UserClaims(
+public record AuthClaims(
         String name,
         String role
 ) {

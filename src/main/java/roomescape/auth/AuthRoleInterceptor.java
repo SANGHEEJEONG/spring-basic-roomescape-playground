@@ -12,17 +12,18 @@ import java.util.Arrays;
 
 @Component
 @RequiredArgsConstructor
-public class RoleCheckInterceptor implements HandlerInterceptor {
+public class AuthRoleInterceptor implements HandlerInterceptor {
     private final MemberService memberService;
+
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String token = Arrays.stream(request.getCookies())
                 .filter(cookie -> "token".equals(cookie.getName()))
                 .findFirst()
                 .map(Cookie::getValue)
-                .orElseThrow(()->new IllegalArgumentException("토큰을 찾을 수 없습니다."));
+                .orElseThrow(() -> new IllegalArgumentException("토큰을 찾을 수 없습니다."));
 
-        UserClaims userClaims = memberService.checkLogin(new UserToken(token));
+        AuthClaims userClaims = memberService.checkLogin(new AuthToken(token));
         if (!userClaims.role().equals("ADMIN")) {
             response.setStatus(401);
             return false;

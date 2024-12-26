@@ -10,10 +10,10 @@ import java.util.List;
 
 @Configuration
 @RequiredArgsConstructor
-public class WebConfig implements WebMvcConfigurer {
+public class AuthWebConfig implements WebMvcConfigurer {
 
-    private final LoginMemberArgumentResolver loginMemberArgumentResolver;
-    private final RoleCheckInterceptor roleCheckInterceptor;
+    private final AuthClaimsArgumentResolver loginMemberArgumentResolver;
+    private final AuthRoleInterceptor roleCheckInterceptor;
 
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {

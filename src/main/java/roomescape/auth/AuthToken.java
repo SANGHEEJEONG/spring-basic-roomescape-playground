@@ -1,6 +1,6 @@
 package roomescape.auth;
 
-public record UserToken(
+public record AuthToken(
         String token
 ) {
 }

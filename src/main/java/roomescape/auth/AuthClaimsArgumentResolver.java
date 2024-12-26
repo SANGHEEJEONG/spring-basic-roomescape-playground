@@ -16,13 +16,13 @@ import java.util.Arrays;
 
 @Component
 @RequiredArgsConstructor
-public class LoginMemberArgumentResolver implements HandlerMethodArgumentResolver {
+public class AuthClaimsArgumentResolver implements HandlerMethodArgumentResolver {
 
     private final MemberService memberService;
 
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
-        return parameter.getParameterType().equals(UserClaims.class);
+        return parameter.getParameterType().equals(AuthClaims.class);
     }
 
     @Override
@@ -32,9 +32,9 @@ public class LoginMemberArgumentResolver implements HandlerMethodArgumentResolve
                 .filter(cookie -> "token".equals(cookie.getName()))
                 .findFirst()
                 .map(Cookie::getValue)
-                .orElseThrow(()->new IllegalArgumentException("토큰을 찾을 수 없습니다."));
+                .orElseThrow(() -> new IllegalArgumentException("토큰을 찾을 수 없습니다."));
 
-        return memberService.checkLogin(new UserToken(token));
+        return memberService.checkLogin(new AuthToken(token));
     }
 }
 
