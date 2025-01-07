@@ -13,6 +13,7 @@ import java.util.Arrays;
 @Component
 @RequiredArgsConstructor
 public class AuthRoleInterceptor implements HandlerInterceptor {
+
     private final MemberService memberService;
 
     @Override
@@ -24,7 +25,7 @@ public class AuthRoleInterceptor implements HandlerInterceptor {
                 .orElseThrow(() -> new IllegalArgumentException("토큰을 찾을 수 없습니다."));
 
         AuthClaims userClaims = memberService.checkLogin(new AuthToken(token));
-        if (!userClaims.role().equals("ADMIN")) {
+        if (!"ADMIN".equals(userClaims.role())) { // 상수 기준으로 비교하기
             response.setStatus(401);
             return false;
         }

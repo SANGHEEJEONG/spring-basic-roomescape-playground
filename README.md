@@ -35,3 +35,11 @@ ___
 + admin 페이지 진입 (HandlerInterceptor 이용)
     -> 관리자 : 진입 가능
     -> 관리자 X : 401 코드 응답
+
+# 🌀 Spring JPA (인증)
+
+# 4단계
+___
+## JPA 전환
++ 엔티티 & 연관 관계 매핑
++ DAP -> JpaRepository를 상속받는 Repository로 대체
