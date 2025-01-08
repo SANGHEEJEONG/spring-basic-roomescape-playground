@@ -43,3 +43,14 @@ ___
 ## JPA 전환
 + 엔티티 & 연관 관계 매핑
 + DAP -> JpaRepository를 상속받는 Repository로 대체
+
+# 5단계
+___
+## 내 예약 목록 조회
++ 응답 DTO -> 예약 아이디, 테마, 날짜, 시간, 상태를 포함
+## 예약 테이블 수정
++ 관리자 예약 (어드민 화면) : name을 string으로 전달
++ 사용자 예약 (예약 화면) : 로그인 정보를 이용해 Member ID 저장
+## API
++ GET/reservation-mine : reservation-mine 페이지 응답
+
