@@ -5,6 +5,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import roomescape.member.Member;
 import roomescape.theme.Theme;
 import roomescape.time.Time;
 
@@ -21,20 +22,15 @@ public class Reservation {
     private Time time;
     @ManyToOne
     private Theme theme;
+    @ManyToOne
+    private Member member;
 
-    public Reservation(Long id, String name, String date, Time time, Theme theme) {
-        this.id = id;
+    public Reservation(String name, String date, Time time, Theme theme, Member member) {
         this.name = name;
         this.date = date;
         this.time = time;
         this.theme = theme;
-    }
-
-    public Reservation(String name, String date, Time time, Theme theme) {
-        this.name = name;
-        this.date = date;
-        this.time = time;
-        this.theme = theme;
+        this.member = member;
     }
 
     public Reservation() {

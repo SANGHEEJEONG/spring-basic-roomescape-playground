@@ -53,4 +53,5 @@ ___
 + 사용자 예약 (예약 화면) : 로그인 정보를 이용해 Member ID 저장
 ## API
 + GET/reservation-mine : reservation-mine 페이지 응답
++ GET/reservations-mine : 내 예약 목록 조회
 

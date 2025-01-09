@@ -1,7 +1,6 @@
 package roomescape.member;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import roomescape.auth.AuthClaims;
 import roomescape.auth.AuthToken;
@@ -20,21 +19,16 @@ public class MemberService {
     }
 
     public AuthToken getToken(LoginRequest loginRequest) {
-        try {
-            Member member = memberRepository.findByEmailAndPassword(loginRequest.email(), loginRequest.password());
-            return jwtUtils.createToken(member);
-        } catch (EmptyResultDataAccessException e) {
-            throw new IllegalArgumentException("로그인 정보가 잘못되었습니다.");
-        }
+        Member member = memberRepository.findByEmailAndPassword(loginRequest.email(), loginRequest.password())
+                .orElseThrow(() -> new IllegalArgumentException("로그인 실패"));
+        return jwtUtils.createToken(member);
+
     }
 
     public AuthClaims checkLogin(AuthToken userToken) {
-        try {
-            AuthClaims userClaims = jwtUtils.getClaimsFromToken(userToken.token());
-            memberRepository.findByName(userClaims.name());
-            return userClaims;
-        } catch (EmptyResultDataAccessException exception) {
-            throw new IllegalArgumentException("존재하지 않는 회원입니다.");
-        }
+        AuthClaims userClaims = jwtUtils.getClaimsFromToken(userToken.token());
+        Member member = memberRepository.findByName(userClaims.name())
+                .orElseThrow(() -> new IllegalArgumentException("헤당 멤버가 없습니다."));
+        return userClaims;
     }
 }
