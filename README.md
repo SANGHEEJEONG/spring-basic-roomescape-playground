@@ -2,18 +2,16 @@
 
 # 1단계
 ___
-## 로그인
-#### 로그인 페이지
+## 로그인 페이지
    + 이메일, 비밀번호 입력
-#### 로그인 요청
+## 로그인 요청
    + 이메일, 비밀번호 -> 멤버 조회
    + 조회한 멤버로 토큰 발급
    + Cookie를 만들어 응답
-#### 인증 정보 조회
+## 인증 정보 조회
    + Cookie -> 토큰 정보 추출
    + 멤버를 찾아서 응답
-
-로그인 관련 API
+## API
 + GET/login : 로그인 페이지 호출
 + POST/login : 로그인 요청
 + GET/login/check : 인증 정보 조회
@@ -42,7 +40,7 @@ ___
 ___
 ## JPA 전환
 + 엔티티 & 연관 관계 매핑
-+ DAP -> JpaRepository를 상속받는 Repository로 대체
++ DAO -> JpaRepository를 상속받는 Repository로 대체
 
 # 5단계
 ___
@@ -54,4 +52,14 @@ ___
 ## API
 + GET/reservation-mine : reservation-mine 페이지 응답
 + GET/reservations-mine : 내 예약 목록 조회
+
+# 6단계
+___
+## 예약 대기
++ 요청 
++ 취소
++ 조회 : N번 째 예약 대기인지 표시
+## API
++ POST/waitings : 예약 대기 생성
++ DELETE/waitings/{id} : 예약 삭제 
 
