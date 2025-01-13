@@ -1,12 +1,15 @@
 package roomescape.auth;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import roomescape.exception.InvalidTokenException;
+import roomescape.exception.MissingTokenException;
 import roomescape.member.Member;
 
 import java.util.Arrays;
@@ -39,12 +42,28 @@ public class JWTUtils {
     }
 
     public AuthClaims getClaimsFromToken(String token) {
-        Claims claims = Jwts.parserBuilder()
-                .setSigningKey(Keys.hmacShaKeyFor(secretKey.getBytes()))
-                .build()
-                .parseClaimsJws(token)
-                .getBody();
+        if (token == null || token.isBlank()) {
+            throw new MissingTokenException("토큰이 비어있습니다.");
+        }
 
-        return new AuthClaims(claims.get("name", String.class), claims.get("role", String.class));
+        try {
+            Claims claims = Jwts.parserBuilder()
+                    .setSigningKey(Keys.hmacShaKeyFor(secretKey.getBytes()))
+                    .build()
+                    .parseClaimsJws(token)
+                    .getBody();
+
+            String name = claims.get("name", String.class);
+            String role = claims.get("role", String.class);
+
+            if (name == null || role == null) {
+                throw new InvalidTokenException("필수 클레임이 누락되었습니다.");
+            }
+
+            return new AuthClaims(name, role);
+
+        } catch (JwtException e) {
+            throw new InvalidTokenException("유효하지 않은 토큰입니다.");
+        }
     }
 }
