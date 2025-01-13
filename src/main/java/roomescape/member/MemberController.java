@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import roomescape.auth.AuthClaims;
 import roomescape.auth.AuthToken;
 
 import java.net.URI;
@@ -35,7 +34,7 @@ public class MemberController {
     }
 
     @GetMapping("/login/check")
-    public AuthClaims checkLogin(@CookieValue("token") String token) {
+    public LoginResponse checkLogin(@CookieValue("token") String token) {
         return memberService.checkLogin(new AuthToken(token));
     }
 

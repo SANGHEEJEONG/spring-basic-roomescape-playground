@@ -27,11 +27,11 @@ public class MemberService {
         }
     }
 
-    public AuthClaims checkLogin(AuthToken userToken) {
+    public LoginResponse checkLogin(AuthToken userToken) {
         try {
             AuthClaims userClaims = jwtUtils.getClaimsFromToken(userToken.token());
-            memberDao.findByName(userClaims.name());
-            return userClaims;
+            Member member = memberDao.findByName(userClaims.name());
+            return new LoginResponse(member.getName());
         } catch (EmptyResultDataAccessException exception) {
             throw new IllegalArgumentException("존재하지 않는 회원입니다.");
         }

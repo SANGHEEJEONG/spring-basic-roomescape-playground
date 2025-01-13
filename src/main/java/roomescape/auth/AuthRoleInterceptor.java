@@ -6,14 +6,14 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
-import roomescape.member.MemberService;
 
 import java.util.Arrays;
 
 @Component
 @RequiredArgsConstructor
 public class AuthRoleInterceptor implements HandlerInterceptor {
-    private final MemberService memberService;
+
+    private final JWTUtils jwtUtils;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
@@ -23,8 +23,8 @@ public class AuthRoleInterceptor implements HandlerInterceptor {
                 .map(Cookie::getValue)
                 .orElseThrow(() -> new IllegalArgumentException("토큰을 찾을 수 없습니다."));
 
-        AuthClaims userClaims = memberService.checkLogin(new AuthToken(token));
-        if (!userClaims.role().equals("ADMIN")) {
+
+        if (!jwtUtils.getClaimsFromToken(token).role().equals("ADMIN")) {
             response.setStatus(401);
             return false;
         }

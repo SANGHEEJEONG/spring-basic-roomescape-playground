@@ -10,7 +10,6 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
-import roomescape.member.MemberService;
 
 import java.util.Arrays;
 
@@ -18,7 +17,7 @@ import java.util.Arrays;
 @RequiredArgsConstructor
 public class AuthClaimsArgumentResolver implements HandlerMethodArgumentResolver {
 
-    private final MemberService memberService;
+    private final JWTUtils jwtUtils;
 
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
@@ -34,7 +33,7 @@ public class AuthClaimsArgumentResolver implements HandlerMethodArgumentResolver
                 .map(Cookie::getValue)
                 .orElseThrow(() -> new IllegalArgumentException("토큰을 찾을 수 없습니다."));
 
-        return memberService.checkLogin(new AuthToken(token));
+        return jwtUtils.getClaimsFromToken(token);
     }
 }
 
